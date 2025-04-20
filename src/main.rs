@@ -49,8 +49,10 @@ impl ExprPool {
 
     /// Add an expression to the pool and get a reference to it.
     fn add(&mut self, expr: Expr) -> ExprRef {
+        println!("Adding {:?} to pool", expr);
         let idx = self.0.len();
         self.0.push(expr);
+        println!("\tpool = {:?}, idx = {}", self.0, idx);
         ExprRef(idx.try_into().expect("too many exprs in the pool"))
     }
 
@@ -103,7 +105,8 @@ impl ExprPool {
     /// expressions only refer "backward" in the pool. Therefore, it suffices to evaluate each
     /// expression in the pool *in order*. No recursion required.
     fn flat_interp(self, root: ExprRef) -> i64 {
-        println!("root = {:?}", root);
+        println!("Entering flat_interp:");
+        println!("\troot = {}", self.disp(root));
         let mut state: Vec<i64> = vec![0; self.0.len()];
         for (i, expr) in self.0.into_iter().enumerate() {
             let res = match expr {
@@ -120,8 +123,9 @@ impl ExprPool {
                 Expr::Literal(num) => num,
             };
             state[i] = res;
+            println!("setting state[{}] = {}", i, res);
         }
-        println!("state = {:?}", state);
+        println!("\tstate = {:?}", state);
         state[root.0 as usize]
     }
 
@@ -293,7 +297,8 @@ fn main() {
         }
         "flat_interp" => {
             let mut pool = ExprPool::default();
-            let expr = parse_stdin(&mut pool).unwrap();
+            let expr: ExprRef = parse_stdin(&mut pool).unwrap();
+            println!("\nparsed expr = {}", pool.disp(expr));
             println!("{}", pool.flat_interp(expr));
         }
         "gen_flat_interp" => {
