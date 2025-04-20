@@ -106,7 +106,7 @@ impl ExprPool {
     /// expression in the pool *in order*. No recursion required.
     fn flat_interp(self, root: ExprRef) -> i64 {
         println!("Entering flat_interp:");
-        println!("\troot = {}", self.disp(root));
+        println!("root = {}", self.disp(root));
         let mut state: Vec<i64> = vec![0; self.0.len()];
         for (i, expr) in self.0.into_iter().enumerate() {
             let res = match expr {
@@ -123,9 +123,9 @@ impl ExprPool {
                 Expr::Literal(num) => num,
             };
             state[i] = res;
-            println!("setting state[{}] = {}", i, res);
+            println!("\tsetting state[{}] = {}", i, res);
         }
-        println!("\tstate = {:?}", state);
+        println!("final arena = {:?}", state);
         state[root.0 as usize]
     }
 
@@ -299,7 +299,7 @@ fn main() {
             let mut pool = ExprPool::default();
             let expr: ExprRef = parse_stdin(&mut pool).unwrap();
             println!("\nparsed expr = {}", pool.disp(expr));
-            println!("{}", pool.flat_interp(expr));
+            println!("final interpreted value = {}", pool.flat_interp(expr));
         }
         "gen_flat_interp" => {
             let (pool, expr) = generate();
