@@ -103,6 +103,7 @@ impl ExprPool {
     /// expressions only refer "backward" in the pool. Therefore, it suffices to evaluate each
     /// expression in the pool *in order*. No recursion required.
     fn flat_interp(self, root: ExprRef) -> i64 {
+        println!("root = {:?}", root);
         let mut state: Vec<i64> = vec![0; self.0.len()];
         for (i, expr) in self.0.into_iter().enumerate() {
             let res = match expr {
@@ -120,6 +121,7 @@ impl ExprPool {
             };
             state[i] = res;
         }
+        println!("state = {:?}", state);
         state[root.0 as usize]
     }
 

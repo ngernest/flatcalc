@@ -33,6 +33,12 @@ This is nice for benchmarking.
 
 This `flat` branch also adds `flat_interp` and `gen_flat_interp`, which demonstrate a different, even flatter interpretation strategy.
 
+Example:
+```bash 
+$ echo "5 * 2 + 3" | cargo run flat_interp
+13
+```
+
 There is a `make bench` target that uses [Hyperfine][] for a quick performance measurement.
 
 [hyperfine]: https://github.com/sharkdp/hyperfine
